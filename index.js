@@ -29,6 +29,7 @@ async function run() {
 
     const courseCollection= client.db('Education').collection('course')
     const courseCartCollection= client.db('Education').collection('courseCart')
+    const usersCollection = client.db("Education").collection("users");
 
     
     // insert a book to the database :post method
@@ -132,6 +133,29 @@ async function run() {
         res.send(result)
       })
   
+     app.delete('/carts/:id',async(req,res)=>{
+      const id =req.params.id
+      const query = { _id: new ObjectId (id) };
+      const result = await courseCartCollection.deleteOne(query);
+      res.send(result)
+    })
+
+    // user collection related api
+
+    app.post('/users',async(req,res)=>{
+      const user =req.body
+      console.log(user)
+      const query ={email:user.email}
+      const existingUser =await usersCollection.findOne(query)
+      console.log('existing User',existingUser)
+      if(existingUser){
+        return res.send({message:'user already exists'})
+      }
+     
+      const result =await usersCollection.insertOne(user);
+      res.send(result)
+    })
+
 
 
 
