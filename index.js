@@ -50,28 +50,28 @@ async function run() {
       // })
   
       // update a book data:patch or update methods
-      app.patch('/book/:id',async(req,res)=>{
+      app.patch('/courses/:id',async(req,res)=>{
         const id =req.params.id
         console.log(id)
-        const updateBookData =req.body
+        const updateCourseData =req.body
         const filter ={_id: new ObjectId(id)}
         const updateDoc ={
           $set:{
-            ...updateBookData,
+            ...updateCourseData,
           }
         }
           // update
-          const result =await bookCollection.updateOne(filter,updateDoc)
+          const result =await courseCollection.updateOne(filter,updateDoc)
           res.send(result)
         
       })
   
       // delete a book data
   
-      app.delete('/book/:id',async(req,res)=>{
+      app.delete('/courses/:id',async(req,res)=>{
         const id =req.params.id
         const filter ={_id: new ObjectId(id)}
-        const result =await bookCollection.deleteOne(filter)
+        const result =await courseCollection.deleteOne(filter)
         res.send(result)
       })
   
