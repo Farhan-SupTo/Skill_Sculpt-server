@@ -58,15 +58,15 @@ async function run() {
     })
 
     // Warning: use verifyJWT before using verifyAdmin
-    const verifyAdmin = async (req, res, next) => {
-      const email = req.decoded.email;
-      const query = { email: email }
-      const user = await usersCollection.findOne(query);
-      if (user?.role !== 'admin') {
-        return res.status(403).send({ error: true, message: 'forbidden message' });
-      }
-      next();
-    }
+    // const verifyAdmin = async (req, res, next) => {
+    //   const email = req.decoded.email;
+    //   const query = { email: email }
+    //   const user = await usersCollection.findOne(query);
+    //   if (user?.role !== 'admin') {
+    //     return res.status(403).send({ error: true, message: 'forbidden message' });
+    //   }
+    //   next();
+    // }
     
     // insert a book to the database :post method
 
@@ -178,7 +178,7 @@ async function run() {
 
     // user collection related api
 
-    app.get('/users',jwtVerify,verifyAdmin,async(req,res)=>{
+    app.get('/users',async(req,res)=>{
       const result =await usersCollection.find().toArray()
       res.send(result)
     })
@@ -200,18 +200,18 @@ async function run() {
       // security layer=verify jwt
     // email same
     // check admin
-    app.get('/users/admin/:email',jwtVerify,async(req,res)=>{
-      const email =req.params.email 
+    // app.get('/users/admin/:email',jwtVerify,async(req,res)=>{
+    //   const email =req.params.email 
 
-        if(req.decoded.email !== email){
-          res.send({admin: false})
-        }
+    //     if(req.decoded.email !== email){
+    //       res.send({admin: false})
+    //     }
 
-      const query ={email: email}
-      const user =await usersCollection.findOne(query)
-      const result ={admin: user?.role === 'admin'}
-      res.send(result)
-    })
+    //   const query ={email: email}
+    //   const user =await usersCollection.findOne(query)
+    //   const result ={admin: user?.role === 'admin'}
+    //   res.send(result)
+    // })
 
 
     app.patch('/users/admin/:id',async(req,res)=>{
